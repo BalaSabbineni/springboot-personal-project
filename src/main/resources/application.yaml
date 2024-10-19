@@ -1,0 +1,59 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/bank_db
+    username: root
+    password: bala123$
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update  # Options: create, update, validate, none
+    show-sql: true       # Shows SQL in console for debugging
+    sql:
+      init:
+        mode: always
+  cloud: # This configuration so important. Need to follow same Hierarchy
+    aws:
+      credentials:
+        accessKey: test
+        secretKey: test
+      sqs:
+        endpoint: http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000042/personal-project-queue
+      region:
+        static: us-east-1
+---
+logging:
+  level:
+    org.springframework.web: DEBUG
+
+---
+details:
+  personal:
+    name: Gopi
+    dob: 07-20-1997
+    location: India
+
+---
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+---
+security:
+  jwt:
+    secret-key: 8dcf5b270436897e16a73827a38b67189ef71edc065d121f820bb8f4638a3c22
+    expiration-time: 3600000
+
+---
+# This configuration so important. Need to follow same Hierarchy
+#spring:
+#  cloud:
+#    aws:
+#      credentials:
+#        accessKey: test
+#        secretKey: test
+#      sqs:
+#        endpoint: http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000042/personal-project-queue
+#      region:
+#        static: us-east-1
+
+
