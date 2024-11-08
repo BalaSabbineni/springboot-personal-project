@@ -6,6 +6,7 @@ import com.personalProject.personalProject.dto.TestEnum;
 import com.personalProject.personalProject.dto.WebClientResponse;
 import com.personalProject.personalProject.messaging.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -26,8 +27,8 @@ public class HelloWorld {
     @Autowired
     private Map<TestEnum, Test> testEnumTestMap;
 
-    @Autowired
-    private Publisher publisher;
+//    @Autowired
+//    private Publisher publisher;
 
     @GetMapping("/hello")
     public String getHello() {
@@ -48,11 +49,20 @@ public class HelloWorld {
     @GetMapping("/testClass")
     public String testClass() {
         System.out.println("hi Bala");
-       publisher.sendMessage("Hi");
+      // publisher.sendMessage("Hi");
 
         return "Hello World...! " +
                 detailsConfig.getName() + " " +
                 detailsConfig.getDob() + " " +
                 detailsConfig.getLocation();
     }
+
+//    @Value("${MY_KEY}")
+//    private String env_key; // added ENV key value in run configurations
+//
+//    @GetMapping("/env")
+//    public String env() {
+//        return env_key;
+//    }
+
 }

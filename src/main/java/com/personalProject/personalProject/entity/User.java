@@ -1,6 +1,7 @@
 package com.personalProject.personalProject.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.personalProject.personalProject.dto.Gender;
 import com.personalProject.personalProject.dto.Status;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,18 +24,20 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String lastName;
-    private String otherName;
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
     private String address;
-    private String country;
-    private String state;
+    @Column(nullable = false)
     private String accountNumber;
+    @Column(nullable = false)
     private String email;
+    // @Column(nullable = false)
     private String phoneNumber;
     private BigDecimal accountBalance;
-    private String alternativePhoneNumber;
     @Enumerated(EnumType.STRING)
     private Status status;
     @CreationTimestamp
@@ -49,7 +52,7 @@ public class User {
      * It occurs when two or more entities reference each other, causing the JSON serialization process to enter an infinite loop.
      */
     @JsonManagedReference
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Account> accounts;
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -60,4 +63,7 @@ public class User {
     private List<FixedDeposit> fixedDeposits;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions;
+
+//    @OneToMany // if we add only this without reference on FD table, it will create new join table with user_id and fd_id
+//    private List<FixedDeposit> fixedDeposits;
 }

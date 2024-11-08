@@ -7,11 +7,12 @@ import com.personalProject.personalProject.dto.UserRequest;
 import com.personalProject.personalProject.entity.User;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public interface UserService {
-    BankResponse createAccount(UserRequest userRequest);
+    BankResponse createUser(UserRequest userRequest);
 
-    void updateAccount(UserRequest userRequest, String accountNumber);
+    void updateUser(UserRequest userRequest, String accountNumber);
 
     User getUserDetails(String accountNumber);
 

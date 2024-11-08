@@ -16,7 +16,7 @@ import java.util.Date;
 public class FixedDeposit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long certificateOfDeposit;
+    private Long id;
     private BigDecimal depositAmount;
     private Double interestRate;
     private Date maturityDate;

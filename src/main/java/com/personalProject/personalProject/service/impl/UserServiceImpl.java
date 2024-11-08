@@ -7,6 +7,7 @@ import com.personalProject.personalProject.repository.UserRepository;
 import com.personalProject.personalProject.service.UserService;
 import com.personalProject.personalProject.utils.AccountUtils;
 import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -23,7 +24,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public BankResponse createAccount(UserRequest userRequest) {
+    public BankResponse createUser(UserRequest userRequest) {
         /**
          * Creating an account and saving new user into the DB
          */
@@ -34,15 +35,13 @@ public class UserServiceImpl implements UserService {
         User newUser = User.builder()
                 .firstName(userRequest.getFirstName())
                 .lastName(userRequest.getLastName())
-                .otherName(userRequest.getOtherName())
-                .gender(userRequest.getGender().name())
+                .gender(userRequest.getGender())
                 .address(userRequest.getAddress())
-                .country(userRequest.getCountry())
                 .phoneNumber(userRequest.getPhoneNumber())
                 .email(userRequest.getEmail())
-                .status(userRequest.getStatus())
                 .accountNumber(AccountUtils.generateAccountNumber())
-                .accountBalance(BigDecimal.ZERO).status(Status.ACTIVE)
+                .accountBalance(BigDecimal.ZERO)
+                .status(Status.PENDING) // make Active by Email confirmation using SQS event or any event
                 .data(userRequest.getData()).build();
 
         List<Account> accounts = userRequest.getAccounts();
@@ -58,7 +57,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateAccount(UserRequest userRequest, String accountNumber) {
+    public void updateUser(UserRequest userRequest, String accountNumber) {
         userRepository.findByAccountNumber(accountNumber).ifPresentOrElse((user) -> {
             user.setPhoneNumber(userRequest.getPhoneNumber());
             userRepository.save(user);
@@ -68,7 +67,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(value = "users", key = "#accountNumber")
     public User getUserDetails(String accountNumber) {
+        System.out.println("From repo: ");
         return userRepository.findByAccountNumber(accountNumber).get();
     }
 

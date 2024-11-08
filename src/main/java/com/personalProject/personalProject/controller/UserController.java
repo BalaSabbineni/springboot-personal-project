@@ -5,18 +5,17 @@ import com.personalProject.personalProject.dto.EnquiryRequest;
 import com.personalProject.personalProject.dto.UserRequest;
 import com.personalProject.personalProject.entity.User;
 import com.personalProject.personalProject.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/user")
-@Slf4j
+@RequestMapping(value = "/api/v1/user", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class UserController {
 
     private final static Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -27,16 +26,23 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public BankResponse createAccount(@RequestBody UserRequest userRequest) {
-        logger.info("user is created {}",  userRequest.getFirstName());
-        return userService.createAccount(userRequest);
+    //@Scheduled(fixedRate = 5000L)
+    public void job3() {
+        logger.info("Scheduler.. job 3 {}", Instant.now());
     }
 
+
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public BankResponse createUser(@RequestBody UserRequest userRequest) {
+        logger.info("user is created {}", userRequest.getFirstName());
+        return userService.createUser(userRequest);
+    }
+
+
     @PutMapping("updateAccount/{accountNumber}")
-    public void updateAccount(@RequestBody UserRequest userRequest, @PathVariable("accountNumber") String accountNumber) {
-        userService.updateAccount(userRequest, accountNumber);
+    public void updateUser(@RequestBody UserRequest userRequest, @PathVariable("accountNumber") String accountNumber) {
+        userService.updateUser(userRequest, accountNumber);
     }
 
     @GetMapping("/{accountNumber}")

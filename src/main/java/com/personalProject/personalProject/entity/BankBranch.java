@@ -19,4 +19,8 @@ public class BankBranch {
     private String city;
     private String state;
     private String country;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

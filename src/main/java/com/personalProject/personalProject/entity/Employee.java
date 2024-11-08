@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "employees")
 @NoArgsConstructor
@@ -16,6 +18,5 @@ public class Employee {
     private Long id;
     private Long branchId;
     private String employeeName;
-    private Long employeeId;
     private String role;
 }
